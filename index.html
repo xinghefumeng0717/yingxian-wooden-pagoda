@@ -224,7 +224,8 @@ input[type=range]::-moz-range-thumb{width:13px;height:13px;border:0;border-radiu
 .bracket-svg.assembling .label,.bracket-svg.assembling .leader{opacity:0;transition:opacity .25s}
 .bracket-svg .part{transition:transform .9s var(--ease),opacity .35s,filter .35s}
 .bracket-svg .part-inner{transition:transform .9s var(--ease)}
-.bracket-svg.is-assembled .label,.bracket-svg.is-assembled .leader{opacity:0}
+.bracket-svg.is-assembled .labelg{opacity:0;pointer-events:none}
+.bracket-svg.is-assembled .leader{opacity:0}
 .bracket-svg.is-assembled .part-inner{transform:translateY(var(--drop,0px))}
 
 /* ---------- workshop / games ---------- */
@@ -534,7 +535,7 @@ input[type=range]::-moz-range-thumb{width:13px;height:13px;border:0;border-radiu
         <article class="tl-panel" id="timelinePanel" aria-live="polite">
           <p class="tl-year">1056</p>
           <h3>A relic house rises</h3>
-          <p>Emperor and congregation commission the Sakyamuni Pagoda at Fogong Temple. Octagonal in plan, 67.31 metres tall, with 24 outer and 8 inner columns on every storey. It is the tallest timber building of its age — and it will remain so.</p>
+          <p>The Sakyamuni Pagoda is raised at Fogong Temple, beside the old road north. Octagonal in plan, 67.31 metres tall, with 24 outer and 8 inner columns on every storey. It is the tallest timber building of its age — and it will remain so.</p>
           <p class="tl-tag">Liao dynasty · Yingxian, Shanxi</p>
         </article>
       </div>
@@ -1606,7 +1607,7 @@ input[type=range]::-moz-range-thumb{width:13px;height:13px;border:0;border-radiu
     var tops = [];
     PARTS.forEach(function (p) {
       tops.push('<g class="part" data-part="' + p.id + '" style="--top:' + COLORS[p.id][0] + ';--front:' + COLORS[p.id][1] + ';--side:' + COLORS[p.id][2] + '">' +
-        '<g class="part-inner" style="--drop:' + (-p.index * 1.62 * ISO.s) + 'px">' +
+        '<g class="part-inner" style="--drop:' + (p.index * 1.62 * ISO.s) + 'px">' +
         p.boxes.slice().sort(function (a, b) { return a.z - b.z; }).map(function (b) {
           return boxSvg({ x: b.x, y: b.y + p.index * 1.62, z: b.z, w: b.w, d: b.d, h: b.h });
         }).join('') + '</g></g>');
@@ -1668,6 +1669,8 @@ input[type=range]::-moz-range-thumb{width:13px;height:13px;border:0;border-radiu
     assembleBtn.addEventListener('click', function () {
       var host = $('#bracketSvg');
       var on = host.classList.toggle('is-assembled');
+      if (on) host.classList.remove('has-active');
+      else setPart('ludou');
       assembleBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
       assembleBtn.innerHTML = on ? 'Pull it apart <span>↑</span>' : 'Assemble the set <span>↓</span>';
     });
